@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+
+	<persistence-unit name="LojaoDoPCPU">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>com.samuexx.lojaodopc.model.Cliente</class>
+		<class>com.samuexx.lojaodopc.model.Endereco</class>
+		<class>com.samuexx.lojaodopc.model.Usuario</class>
+		<class>com.samuexx.lojaodopc.model.Grupo</class>
+		<class>com.samuexx.lojaodopc.model.Produto</class>
+		<class>com.samuexx.lojaodopc.model.Categoria</class>
+		<class>com.samuexx.lojaodopc.model.ItemPedido</class>
+		<class>com.samuexx.lojaodopc.model.Pedido</class>
+		<class>com.samuexx.lojaodopc.model.EnderecoEntrega</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/lojaodopc" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="HB20x2015" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+
+
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.archive.autodetection" value="class, hbm"/>
+		</properties>
+	</persistence-unit>
+</persistence>
