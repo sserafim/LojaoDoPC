@@ -2,8 +2,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:o="http://omnifaces.org/ui">
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -32,7 +31,7 @@
 		<div style="float: right; margin-right: 110px">
 			<span
 				style="float: left; height: 30px; line-height: 30px; margin-right: 60px">
-				Olá usuário! </span>
+				Olá #{seguranca.nomeUsuario}! </span>
 
 			<h:form style="display:inline-block">
 				<p:menubar styleClass="menu-sistema">
@@ -47,7 +46,7 @@
 						<p:menuitem value="Novo Pedido" outcome="/pedidos/CadastroPedido" />
 						<p:menuitem value="Pesquisa" outcome="/pedidos/PesquisaPedidos" />
 					</p:submenu>
-					<p:menuitem value="Sair" />
+					<p:menuitem value="Sair" url="/j_spring_security_logout" />
 				</p:menubar>
 			</h:form>
 		</div>

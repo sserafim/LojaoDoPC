@@ -9,12 +9,9 @@ import com.samuexx.lojaodopc.model.StatusPedido;
 import com.samuexx.lojaodopc.repository.PedidoRepository;
 import com.samuexx.lojaodopc.util.jpa.Transactional;
 
-public class EmissaoPedidoService implements Serializable {
+public class CancelamentoPedidoService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	@Inject
-	private CadastroPedidoService cadastroPedidoService;
 
 	@Inject
 	private PedidoRepository pedidoRepository;
@@ -23,18 +20,22 @@ public class EmissaoPedidoService implements Serializable {
 	private EstoqueService estoqueService;
 
 	@Transactional
-	public Pedido emitir(Pedido pedido) {
-		pedido = this.cadastroPedidoService.salvar(pedido);
+	public Pedido cancelar(Pedido pedido) {
+		pedido = this.pedidoRepository.porId(pedido.getId());
 
-		if (pedido.isNaoEmissivel()) {
+		if (pedido.isNaoCancelavel()) {
 			throw new NegocioException(
-					"Pedido não não pode ser emitido com status "
+					"Pedido não pode ser cancelado no status "
 							+ pedido.getStatus().getDescricao() + ".");
 		}
-
-		this.estoqueService.baixarItensEstoque(pedido);
-
-		pedido.setStatus(StatusPedido.EMITIDO);
+		
+		if(pedido.isEmitido()){
+			this.estoqueService.retornarItensEstoque(pedido);
+				
+		}
+		
+		pedido.setStatus(StatusPedido.CANCELADO);
+		
 		pedido = this.pedidoRepository.guardar(pedido);
 
 		return pedido;

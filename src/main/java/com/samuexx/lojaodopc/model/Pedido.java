@@ -168,7 +168,7 @@ public class Pedido implements Serializable {
 		this.enderecoEntrega = enderecoEntrega;
 	}
 
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	public List<ItemPedido> getItens() {
 		return itens;
 	}
@@ -213,10 +213,11 @@ public class Pedido implements Serializable {
 	}
 
 	@Transient
-	public BigDecimal getValorSubTotal(){
-		return this.getValorTotal().add(this.getValorDesconto()).subtract(getValorFrete());
+	public BigDecimal getValorSubTotal() {
+		return this.getValorTotal().add(this.getValorDesconto())
+				.subtract(getValorFrete());
 	}
-	
+
 	public void recalcularValorTotal() {
 		BigDecimal total = BigDecimal.ZERO;
 
@@ -234,30 +235,30 @@ public class Pedido implements Serializable {
 	}
 
 	public void adicionarItemVazio() {
-		
-		if(this.isOrcamento()){
+
+		if (this.isOrcamento()) {
 			Produto produto = new Produto();
-			
+
 			ItemPedido item = new ItemPedido();
 			item.setProduto(produto);
 			item.setPedido(this);
-			
+
 			this.getItens().add(0, item);
 		}
 	}
 
 	@Transient
-	public boolean isOrcamento() {		
+	public boolean isOrcamento() {
 		return StatusPedido.ORCAMENTO.equals(this.getStatus());
 	}
 
 	public void removerItemVazio() {
 		ItemPedido primeiroItem = getItens().get(0);
-		
-		if(primeiroItem != null && primeiroItem.getProduto().getId() == null){
+
+		if (primeiroItem != null && primeiroItem.getProduto().getId() == null) {
 			this.getItens().remove(0);
 		}
-		
+
 	}
 
 	@Transient
@@ -271,13 +272,43 @@ public class Pedido implements Serializable {
 	}
 
 	@Transient
-	public boolean isNaoEmissivel() {		
+	public boolean isNaoEmissivel() {
 		return !this.isEmissivel();
 	}
-	
+
 	@Transient
-	public boolean isEmissivel(){
+	public boolean isEmissivel() {
 		return this.isExistente() && this.isOrcamento();
+	}
+
+	@Transient
+	public boolean isNaoCancelavel() {
+		return !this.isCancelavel();
+	}
+
+	@Transient
+	private boolean isCancelavel() {
+		return this.isExistente() && !this.isCancelado();
+	}
+
+	@Transient
+	private boolean isCancelado() {
+		return StatusPedido.CANCELADO.equals(this.getStatus());
+	}
+
+	@Transient
+	public boolean isNaoAlteravel() {
+		return !this.isAlteravel();
+	}
+
+	@Transient
+	private boolean isAlteravel() {
+		return this.isOrcamento();
+	}
+
+	@Transient
+	public boolean isNaoEnviavelPorEmail() {
+		return this.isNovo() || this.isCancelado();
 	}
 
 }

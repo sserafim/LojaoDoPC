@@ -2,6 +2,7 @@ package com.samuexx.lojaodopc.controller;
 
 import java.io.Serializable;
 
+import javax.enterprise.event.Event;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,12 +25,17 @@ public class EmissaoPedidoBean implements Serializable{
 	@PedidoEdicao
 	private Pedido pedido;
 	
+	@Inject
+	private Event<PedidoAlteradoEvent> pedidoAlteradoEvent;
+	
 	public void emitirPedido(){
 		
 		this.pedido.removerItemVazio();
 		
 		try{
 			this.pedido = this.emissaoPedidoService.emitir(this.pedido);
+			
+			this.pedidoAlteradoEvent.fire(new PedidoAlteradoEvent(this.pedido));
 			
 			FacesUtil.addInfoMessage("Pedido emitido com sucesso!");
 		}finally{

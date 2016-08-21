@@ -3,6 +3,7 @@ package com.samuexx.lojaodopc.controller;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
@@ -123,6 +124,10 @@ public class CadastroPedidoBean implements Serializable {
 		} finally {
 			this.pedido.adicionarItemVazio();
 		}
+	}
+	
+	public void pedidoAlterado(@Observes PedidoAlteradoEvent event){
+		this.pedido = event.getPedido();
 	}
 
 
