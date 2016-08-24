@@ -15,7 +15,8 @@
 
 			<p:toolbar style="margin-top:20px">
 				<p:toolbarGroup>
-					<p:commandButton value="Pesquisar" />
+					<p:commandButton value="Pesquisar"
+						action="#{pesquisaClientesBean.pesquisar}" update="@form" />
 				</p:toolbarGroup>
 
 				<p:toolbarGroup align="right">
@@ -28,30 +29,35 @@
 				style="margin-top:20px; width:100%" columnClasses="rotulo,campo">
 
 				<p:outputLabel value="Nome" for="nome" />
-				<p:inputText id="nome" size="60" maxlength="80" />
+				<p:inputText id="nome" size="60" maxlength="80"
+					value="#{pesquisaClientesBean.clienteFilter.nome}" />
 
 				<p:outputLabel value="CPF/CNPJ" for="CpfCnpj" />
-				<p:inputMask id="CpfCnpj" />
+				<p:inputText id="CpfCnpj" size="14" maxlength="14"
+					value="#{pesquisaClientesBean.clienteFilter.documentoReceitaFederal}" />
 
 			</p:panelGrid>
 
 
-			<p:dataTable id="clientesTable" value="#{pesquisaClientesBean.clientesFiltrados}"
-				var="cliente" style="margin-top: 20px"
-				emptyMessage="Nenhum pedido encontrado" rows="10" paginator="true"
-				paginatorAlwaysVisible="false" paginatorPosition="bottom">
+			<p:dataTable id="clientesTable"
+				value="#{pesquisaClientesBean.clientesFiltrados}" var="cliente"
+				style="margin-top: 20px" emptyMessage="Nenhum pedido encontrado"
+				rows="10" paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
 
 				<p:column headerText="Nome">
-					<h:outputText value="Supermercado João das couves" />
+					<h:outputText value="#{cliente.nome}" />
 				</p:column>
 
 				<p:column headerText="Tipo">
-					<h:outputText value="Jurídico" />
+					<h:outputText value="#{cliente.tipo}" />
 				</p:column>
 
 
 				<p:column headerText="CPF/CNPJ">
-					<h:outputText value="317.699.388-93" />
+					<h:outputText value="#{cliente.documentoReceitaFederal}">
+						<p:inputMask mask="999.999.999-99" />
+					</h:outputText>
 				</p:column>
 
 
